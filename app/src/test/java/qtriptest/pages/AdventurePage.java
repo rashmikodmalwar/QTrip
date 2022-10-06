@@ -80,9 +80,6 @@ public class AdventurePage {
        // int countsize=0;
    WebDriverWait wait = new WebDriverWait(driver, 30);
    wait.until(ExpectedConditions.visibilityOfAllElements(getImageCount));
-//    if(getImageCount.size()==count){
-//    countsize = getImageCount.size();
-//    }
     return getImageCount.size();
   
 }

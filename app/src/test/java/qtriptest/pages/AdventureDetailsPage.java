@@ -36,7 +36,6 @@ public class AdventureDetailsPage {
 
 
   public void bookAdventure(String name, String date,int numberOfPersons) throws InterruptedException{
-    System.out.print("hiiiii");
     name_text_box.sendKeys(name);
     Thread.sleep(2000);
     selected_date.sendKeys(date);
@@ -46,7 +45,6 @@ public class AdventureDetailsPage {
     WebDriverWait wait = new WebDriverWait(driver, 30);
     wait.until(ExpectedConditions.elementToBeClickable(reserve_button));
     reserve_button.click();
-    System.out.print("hiiiii");
   }
 
   public boolean isBookingSuccessful(){

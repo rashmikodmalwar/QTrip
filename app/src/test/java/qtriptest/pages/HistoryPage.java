@@ -52,7 +52,6 @@ public class HistoryPage {
         for(int j = 0;j<transactionId.size();j++){
            if(transactionId.get(j).getText().equals(transaction)){
             cancelbtn.click();
-            System.out.println("hhhhhh");
            
            }
         }
