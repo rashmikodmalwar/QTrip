@@ -7,11 +7,13 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AdventurePage {
     RemoteWebDriver driver;
-    String url = "https://qtripdynamic-qa-frontend.vercel.app/pages/adventures/?city="+String.format(%s,city);
+    //String url="https://qtripdynamic-qa-frontend.vercel.app/pages/adventures/?city=goa";
 
     @FindBy(id = "duration-select")
     WebElement select_duration_dropdown;
@@ -22,10 +24,13 @@ public class AdventurePage {
     @FindBy(id = "search-adventures")
     WebElement search_adventure_text_box;
 
-    @FindBy(xpath = "//div[@id='data']//div[@class='activity-card']")
+    @FindBy(xpath = "//div[@class='col-6 col-lg-3 mb-4']")
     List<WebElement> getImageCount;
 
-    @FindBy(xpath ="//div[@onclick='clearDuration(event)']")
+    @FindBy(xpath = "//div[@id='data']//div[@class='activity-card']//h5")
+    List<WebElement> getPlaceText;
+
+    @FindBy(xpath ="(//div[@class='ms-3']//parent::div)[2]")
     WebElement clear_duration;
     //(//div[@class='ms-3']//parent::div)[2]
     //div[@onclick='clearDuration(event)']
@@ -37,49 +42,57 @@ public class AdventurePage {
    
     public AdventurePage(RemoteWebDriver driver1){
         this.driver = driver1;
-        this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20),this);
     }
-    public void navigateToAdventurePage(String city){
-        "https://qtripdynamic-qa-frontend.vercel.app/pages/adventures/?city="+String.format(%s,city)
-        if(!driver.getCurrentUrl().equals(this.url)){
-            driver.get(url);
-        }
-    }
+    
     public void setFilterValueDuration(String filter){
      
         Select dropdown = new Select(select_duration_dropdown);
-        dropdown.selectByValue(filter);
+        dropdown.selectByVisibleText(filter);
 
     }
 
     public void setFilterValueCategory(String filter){
-     
+        
         Select dropdown = new Select(select_category_dropdown);
-        dropdown.selectByValue(filter);
+        dropdown.selectByVisibleText(filter);
 
     }
    
     public void clearFilterDuration(){
-        clear_duration.clear();
-        System.out.println("he-------");
+        if(clear_duration.isEnabled()){
+            clear_duration.click();
+        }
+        
+
     }
 
     public void clearFilterCategory(){
-        clear_Category.clear();
-        System.out.println("he-------");
+       if(clear_Category.isEnabled()){
+        clear_Category.click();;
+
+       }
+        
     }
 
     public int getResultCount(){
-    
-    if(getImageCount.size()==0){
-      return 0;
-    }else
-   return getImageCount.size();
+       // int countsize=0;
+   WebDriverWait wait = new WebDriverWait(driver, 30);
+   wait.until(ExpectedConditions.visibilityOfAllElements(getImageCount));
+//    if(getImageCount.size()==count){
+//    countsize = getImageCount.size();
+//    }
+    return getImageCount.size();
+  
 }
 
-    public void selectCity(String place){
-        search_adventure_text_box.sendKeys(place);
+    public void selectAdventure(String placeName){
+        for(int i=0;i<getPlaceText.size();i++){
+            if(getPlaceText.get(i).getText().equalsIgnoreCase(placeName)){
+                getPlaceText.get(i).click();
+            }
+        }
     }
 
 }

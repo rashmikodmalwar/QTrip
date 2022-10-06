@@ -7,8 +7,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 public class RegisterPage {
 
@@ -16,7 +15,7 @@ public class RegisterPage {
 public String lastGeneratedUserName_;
 public RegisterPage(RemoteWebDriver driver1){
     this.driver = driver1;
-    this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20),this);
 }
 String url = "https://qtripdynamic-qa-frontend.vercel.app/pages/register/";
@@ -53,8 +52,5 @@ public void registerUser(String name,String password,String confirmPassword,Bool
    confirmPassword_txt_box.sendKeys(confirmPassword);
    btnRegister.click();
    lastGeneratedUserName_ = test_data_userName;
-//    WebDriverWait wait = new WebDriverWait(driver,30 );
-//    wait.until(ExpectedConditions.urlToBe("https://qtripdynamic-qa-frontend.vercel.app/pages/login"));
-   
 }
 }

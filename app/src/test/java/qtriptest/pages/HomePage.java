@@ -6,13 +6,15 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePage {
   RemoteWebDriver driver;
     public HomePage(RemoteWebDriver driver1){
         this.driver = driver1;
         driver.manage().window().maximize();
-        this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20),this);
     }
     String url = "https://qtripdynamic-qa-frontend.vercel.app/";
@@ -29,7 +31,7 @@ public class HomePage {
     @FindBy(xpath = "//input[@id='autocomplete']")
     WebElement searchCity_txt_box;
 
-    @FindBy(xpath ="//ul[@id='results']//child::li")
+    @FindBy(xpath ="//ul[@id='results']")
     WebElement select_Auto_City;
 
     @FindBy(xpath = "//ul[@id='results']")
@@ -41,12 +43,7 @@ public class HomePage {
     }
   }
     public void clickRegister(){
-        try {
-          Thread.sleep(2000);
-        } catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+        
         register_btn.click();
     }
 
@@ -66,6 +63,7 @@ public class HomePage {
     public void searchCity(String city){
        searchCity_txt_box.clear();
        searchCity_txt_box.sendKeys(city);
+       
     }
 
     public boolean noCityFound(){
@@ -80,13 +78,16 @@ public class HomePage {
     }
     
     public boolean assertAutoCompleteText(String city){
-      if(select_Auto_City.getText().equals(city)){
+      WebDriverWait wait = new WebDriverWait(driver,30);
+      wait.until(ExpectedConditions.visibilityOf(select_Auto_City));
+      if(select_Auto_City.getText().equalsIgnoreCase(city)){
         return true;
       }
       else
       return false;
     }
     public void selectCity(String autoCompleteCity){
+     
      select_Auto_City.click();
     }
 

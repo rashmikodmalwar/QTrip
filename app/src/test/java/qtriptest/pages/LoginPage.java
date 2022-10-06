@@ -13,7 +13,7 @@ public class LoginPage {
     RemoteWebDriver driver;
     public LoginPage(RemoteWebDriver driver1){
         this.driver = driver1;
-        this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20),this);
     }
     String url = "https://qtripdynamic-qa-frontend.vercel.app/pages/login";

@@ -1,5 +1,6 @@
 package qtriptest.tests;
 
+import qtriptest.DP;
 import qtriptest.DriverSingleton;
 import qtriptest.pages.HomePage;
 import qtriptest.pages.LoginPage;
@@ -20,24 +21,22 @@ public class testCase_01 {
     public static void createDriver(){
         driver=DriverSingleton.getInstance();
     }
+   
 
-  
-   @Test(description = "verify user registration - login -logout")
-    public void testcase01() throws InterruptedException{
-        boolean status;
-        HomePage home =new HomePage(driver);
+   @Test(dataProvider="logindata", dataProviderClass = DP.class,description = "verify user registration - login -logout",priority=1,groups={"Login Flow"})
+    public void TestCase01(String userName,String password ) throws InterruptedException{
+       boolean status;
+       HomePage home =new HomePage(driver);
        home.goToHomePage();
        home.clickRegister();
        Thread.sleep(2000);
-       System.out.println("hello-----");
        RegisterPage register = new RegisterPage(driver);
        register.navigateToRegisterPage();
-       register.registerUser("abc@gmail.com", "abc@123","abc@123",true);
-       System.out.println("hello-----");
+       register.registerUser(userName,password,password,true);
        lastGeneratedName= register.lastGeneratedUserName_;
        Thread.sleep(2000);
        LoginPage login = new LoginPage(driver);
-       login.performLogin(lastGeneratedName, "abc@123");
+       login.performLogin(lastGeneratedName,password);
        status=home.isUserLoggedIn();
        Assert.assertTrue(status,"user is not login");
        home.logoutUser();

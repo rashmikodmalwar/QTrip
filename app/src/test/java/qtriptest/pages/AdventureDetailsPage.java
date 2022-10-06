@@ -7,18 +7,20 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AdventureDetailsPage {
   RemoteWebDriver driver;
   public AdventureDetailsPage(RemoteWebDriver driver1){
     this.driver = driver1;
-    this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     PageFactory.initElements(new AjaxElementLocatorFactory(driver, 20),this);
   }
 
   @FindBy(name = "name")
   WebElement name_text_box;
-
+  
   @FindBy(name = "date")
   WebElement selected_date;
 
@@ -33,12 +35,18 @@ public class AdventureDetailsPage {
   
 
 
-  public void bookAdventure(String name, String date,int numberOfPersons){
+  public void bookAdventure(String name, String date,int numberOfPersons) throws InterruptedException{
+    System.out.print("hiiiii");
     name_text_box.sendKeys(name);
-    String date1 = "14-09-2022";
-    selected_date.sendKeys(date1);
+    Thread.sleep(2000);
+    selected_date.sendKeys(date);
+    Thread.sleep(2000);
+    person_text_box.clear();
     person_text_box.sendKeys(String.valueOf(numberOfPersons));
+    WebDriverWait wait = new WebDriverWait(driver, 30);
+    wait.until(ExpectedConditions.elementToBeClickable(reserve_button));
     reserve_button.click();
+    System.out.print("hiiiii");
   }
 
   public boolean isBookingSuccessful(){
